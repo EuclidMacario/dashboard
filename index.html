@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tableau Dashboard Interaktif</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+  <style>
+    :root {
+      --bg-light: #f0f4f8;
+      --bg-dark: #111827;
+      --text-light: #333;
+      --text-dark: #f3f4f6;
+      --nav-light: #1f2937;
+      --nav-dark: #374151;
+      --hover-light: #facc15;
+      --hover-dark: #fbbf24;
+      --font-main: 'Poppins', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-main);
+    }
+
+    body {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    nav {
+      background-color: var(--nav-light);
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 10px;
+      height: 55px;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: background-color 0.3s;
+    }
+
+    body.dark nav {
+      background-color: var(--nav-dark);
+    }
+
+    nav a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      border-radius: 6px;
+      margin-right: 4px;
+    }
+
+    nav a:hover {
+      background-color: var(--hover-light);
+      color: #1f2937;
+    }
+
+    body.dark nav a:hover {
+      background-color: var(--hover-dark);
+      color: #111827;
+    }
+
+    .toggle-mode {
+      margin-left: auto;
+      padding: 8px 16px;
+      background-color: #4b5563;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .toggle-mode:hover {
+      background-color: #6b7280;
+    }
+
+    .container {
+      padding: 16px;
+      margin-top: 55px;
+      height: calc(100vh - 55px);
+    }
+
+    #dashboardEmbed,
+    #tableauViz {
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: background-color 0.3s;
+    }
+
+    body.dark #dashboardEmbed,
+    body.dark #tableauViz {
+      background-color: #1f2937;
+    }
+
+    #dashboardEmbed { display: block; }
+    #tableauViz { display: none; }
+
+    @media (max-width: 768px) {
+      nav a {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <a href="#" onclick="showDashboard()">Dashboard</a>
+    <a href="#" onclick="loadViz('Sheet1')">Sheet 1</a>
+    <a href="#" onclick="loadViz('Sheet2')">Sheet 2</a>
+    <a href="#" onclick="loadViz('Sheet3')">Sheet 3</a>
+    <a href="#" onclick="loadViz('Sheet4')">Sheet 4</a>
+    <a href="#" onclick="loadViz('Sheet5')">Sheet 5</a>
+    <a href="#" onclick="loadViz('Sheet6')">Sheet 6</a>
+    <a href="#" onclick="loadViz('Sheet7')">Sheet 7</a>
+    <a href="#" onclick="loadViz('Sheet8')">Sheet 8</a>
+    <a href="#" onclick="loadViz('Sheet9')">Sheet 9</a>
+    <a href="#" onclick="loadViz('Sheet10')">Sheet 10</a>
+    <a href="#" onclick="loadViz('Sheet11')">Sheet 11</a>
+    <a href="#" onclick="loadViz('Sheet12')">Sheet 12</a>
+    <button class="toggle-mode" onclick="toggleDarkMode()">🌙 DARK MODE</button>
+  </nav>
+
+  <!-- Container -->
+  <div class="container">
+    <div id="dashboardEmbed"></div>
+    <div id="tableauViz"></div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    let viz;
+    const dashboardDiv = document.getElementById("dashboardEmbed");
+    const vizDiv = document.getElementById("tableauViz");
+
+    function loadDashboard() {
+      const dashboardURL = "https://public.tableau.com/views/Superstore_17484367634610/DASHBOARD";
+      const options = {
+        hideTabs: true,
+        hideToolbar: true,
+        width: "100%",
+        height: "100%"
+      };
+      if (viz) viz.dispose();
+      dashboardDiv.style.display = "block";
+      vizDiv.style.display = "none";
+      viz = new tableau.Viz(dashboardDiv, dashboardURL, options);
+    }
+
+    function loadViz(sheetName) {
+      const url = `https://public.tableau.com/views/Superstore_17484367634610/${sheetName}`;
+      const options = {
+        hideTabs: true,
+        hideToolbar: true,
+        width: "100%",
+        height: "100%"
+      };
+      if (viz) viz.dispose();
+      dashboardDiv.style.display = "none";
+      vizDiv.style.display = "block";
+      viz = new tableau.Viz(vizDiv, url, options);
+    }
+
+    function showDashboard() {
+      loadDashboard();
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+    }
+
+    window.onload = loadDashboard;
+  </script>
+</body>
+</html>
